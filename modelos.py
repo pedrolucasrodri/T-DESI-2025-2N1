@@ -24,3 +24,10 @@ email - para enviar os resultados dos exames.
 idade - para definir prioridade de atendimento, e qual abordagem usar, com medicamentos e cirurgias.
 
 """
+
+class PedidoEntrega:
+    """
+    Representa um pedido
+    de entrega de comida
+
+    """
