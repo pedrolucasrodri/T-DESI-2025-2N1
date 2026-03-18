@@ -6,7 +6,7 @@ estoque = {
 
 historico_compras = []
 
-print("Informe nome do produto, quantidade e valor")
+print("Informe nome do produto, quantidade e valor")                            
 
 # cadastro de produtos e verificação se item já foi cadastrado #
 

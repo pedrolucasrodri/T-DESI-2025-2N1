@@ -1,3 +1,4 @@
+"""
 # Função para Calcular desconto
 def calcular_preco_final(valor, desconto_percent):
     valor_do_desconto = valor * (desconto_percent/100)
@@ -6,16 +7,18 @@ def calcular_preco_final(valor, desconto_percent):
 
 total = calcular_preco_final(100, 15)
 print(f"O preço do desconto é: R$ {total}")
+"""
 
-
+"""
 # Função para saudação
 def saudar_usuario():
     nome = input("Digite seu nome: ")
     print(f"Olá, {nome}! Bem-vindo!")
 
 saudar_usuario()
+"""
 
-
+"""
 # Função para 3 banners
 def exibir_banner():
     empresa =[]
@@ -28,11 +31,27 @@ def exibir_banner():
         print(f" { '*' * 10} {empresa} { '*' * 10}" )
 
 exibir_banner()
+"""
 
-
+"""
 # Função para 1 empresa
 def exibir_banner():
     empresa = input("Digite o nome da empresa: ")
     print(f"{'*' * 10 } {empresa} {'*' * 10 } ")
 
 exibir_banner()
+"""
+
+"""
+def fazer_camiseta(tamanho, mensagem):
+    print(f"A camisa é {tamanho} e a menssagem é: {mensagem}")
+
+print("Chamada 1 (Padrão): ")
+fazer_camiseta('M', 'Eu amo Python')
+
+print("Chamada 2 (Padrão): ")
+fazer_camiseta('P', 'Pyton é incrivel')
+
+print("Chamada 3 (Padrão): ")
+fazer_camiseta('G', 'Python is good')
+"""
