@@ -7,7 +7,6 @@ class ClienteDAO:
         self.criar_tabela()
 
     def criar_tabela(self):
-
         conexao = sqlite3.connect(self.db_path)
         cursor = conexao.cursor()
         
@@ -36,8 +35,7 @@ class ClienteDAO:
             print("LOG: Cliente salvo com sucesso no banco de dados.")
             
         except sqlite3.Error as e:
-            print(f"ERRO DAO: Falha ao inserir cliente. Detalhe: {e}")
-            
+            raise e 
         finally:
             cursor.close()
             conexao.close()
@@ -49,21 +47,55 @@ class ClienteDAO:
         cursor.execute("SELECT id, nome, email FROM clientes") 
         resultado_bruto = cursor.fetchall()
 
-        lista_dados = []
+        lista_clientes = []
         for linha in resultado_bruto:
-            cliente_dicionario = {
-                "id": linha[0],
-                "nome": linha[1],
-                "email": linha[2]
-            }
-            lista_dados.append(cliente_dicionario)
+            cliente_obj = Cliente(linha[0], linha[1], linha[2])
+            lista_clientes.append(cliente_obj)
 
         conexao.close()
-        
-        print("--- RELATÓRIO DO SISTEMA ---")
-        
-        if len(lista_dados) == 0:
-            print("Nenhum cliente cadastrado no momento.")
-        else:
-            for cliente in lista_dados:
-                print(f"[{cliente['id']}] Nome: {cliente['nome']}, Email: {cliente['email']}")
+        return lista_clientes
+
+    def buscar_por_id(self, id_busca: int):
+        conexao = sqlite3.connect(self.db_path)
+        cursor = conexao.cursor()
+        sql = "SELECT id, nome, email FROM clientes WHERE id = ?"
+        cursor.execute(sql, (id_busca,))
+        linha = cursor.fetchone() 
+        conexao.close()
+        if linha:
+            return Cliente(linha[0], linha[1], linha[2])
+        return None
+
+    def atualizar(self, cliente: Cliente):
+        try:
+            conexao = sqlite3.connect(self.db_path)
+            cursor = conexao.cursor()
+            sql = "UPDATE clientes SET nome = ?, email = ? WHERE id = ?"
+            valores = (cliente.nome, cliente.email, cliente.id)
+            cursor.execute(sql, valores)
+            conexao.commit()
+            print(f"LOG: Cliente ID {cliente.id} atualizado com sucesso no banco.")
+        except sqlite3.Error as e:
+            raise e 
+        finally:
+            cursor.close()
+            conexao.close()
+
+    def deletar(self, id_deletar: int):
+        cliente_existe = self.buscar_por_id(id_deletar)
+
+        if cliente_existe:
+            try:
+                conexao = sqlite3.connect(self.db_path)
+                cursor = conexao.cursor()
+                sql = "DELETE FROM clientes WHERE id = ?"
+                cursor.execute(sql, (id_deletar,))
+                conexao.commit()
+                print("Cliente deletado")
+            except sqlite3.Error as e:
+            # Em vez de print, nós lançamos o erro para a View capturar!
+                raise e 
+            finally:
+                cursor.close()
+                conexao.close()
+                print("Aviso: Cliente inexistente")
